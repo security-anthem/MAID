@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MAID</title>
+    <link rel="stylesheet" href="drag_and_drop.css">
+</head>
+
+<body>
+    <h1>MAID (Mail Detective) </h1>
+    <h2>メールのアップロード</h2>
+    <div id="upload-area">
+        <p>Thunderbirdからメールをドラッグ＆ドロップもしくは以下のボタンから.emlファイルをアップロード</p>
+        <input type="file" name="file" id="file-input">
+    </div>
+    <h2>分析結果</h2>
+    <div id="result"></div>
+    <script type="text/javascript" src="analysis_controller.js"></script>
+    <script type="text/javascript" src="read_file.js"></script>
+</body>
+
+</html>
