@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>MAID</title>
-    <link rel="stylesheet" href="drag_and_drop.css">
-    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="static/drag_and_drop.css">
+    <link rel="stylesheet" href="static/base.css">
 </head>
 
 <body>
@@ -68,8 +68,8 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="analysis_controller.js"></script>
-    <script type="text/javascript" src="read_file.js"></script>
+    <script type="text/javascript" src="static/analysis_controller.js"></script>
+    <script type="text/javascript" src="static/read_file.js"></script>
 </body>
 
 </html>

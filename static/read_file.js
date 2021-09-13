@@ -32,6 +32,14 @@ function resultFile(file) {
     fr.onload = function () {
         let analysis_result = analysis_controller(fr.result);
         result.innerHTML = "";
+        let send_form=document.createElement("form");
+        send_form.setAttribute("action", "");
+        send_form.setAttribute("method", "post");
+        send_form.setAttribute("name", "send_form");
+        send_form.appendChild(analysis_result);
+        result.appendChild(send_form);
+        document.send_form.submit();
         result.appendChild(analysis_result);
+        
     };
 }

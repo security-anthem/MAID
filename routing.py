@@ -1,9 +1,17 @@
 import os
 import bottle
-from bottle import run, get, static_file
+from bottle import run, get, post, static_file, template, request
 
-@get("/<static:path>")
-def hello_world(static):
+@get("/")
+def index():
+        return template("index")
+
+@post("/")
+def api_call():
+        return str(request.forms.send_data)
+
+@get("/static/<static:path>")
+def get_static(static):
         return static_file(static,root="static")
 
 if __name__ == "__main__":
