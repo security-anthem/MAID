@@ -1,6 +1,8 @@
 import os
 import bottle
 from bottle import run, get, post, static_file, template, request
+import data_register
+import data_compare
 
 @get("/")
 def index():
@@ -8,7 +10,11 @@ def index():
 
 @post("/")
 def api_call():
-        return str(request.forms.send_data)
+        # 受信データとDBに保存されたデータを比較する関数
+        compareResults=data_compare.recvDataCompare()
+        # DBに受信データを格納する関数
+        data_register.recvDataRegister()
+        return str(compareResult + request.forms.send_data)
 
 @get("/static/<static:path>")
 def get_static(static):
