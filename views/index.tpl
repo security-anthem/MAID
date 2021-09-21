@@ -16,6 +16,7 @@
         <input type="file" name="file" id="file-input">
     </div>
     <h2>分析結果</h2>
+    {{result}}
     <div id="result">
         <div class="result-flex">
             <div class="square">
