@@ -14,7 +14,7 @@ def api_call():
         compareResults=data_compare.recvDataCompare()
         # DBに受信データを格納する関数
         data_register.recvDataRegister()
-        return str(compareResult + request.forms.send_data)
+        return str(compareResults + request.forms.send_data)
 
 @get("/static/<static:path>")
 def get_static(static):
