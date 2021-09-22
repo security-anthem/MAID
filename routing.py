@@ -6,7 +6,7 @@ import data_compare
 
 @get("/")
 def index():
-        return template("index")
+        return template("index", result="")
 
 @post("/")
 def api_call():
@@ -14,8 +14,7 @@ def api_call():
         compareResults=data_compare.recvDataCompare()
         # DBに受信データを格納する関数
         data_register.recvDataRegister()
-        return str(compareResult + request.forms.send_data)
-
+        return template("index", result=str(compareResults + request.forms.send_data))
 @get("/static/<static:path>")
 def get_static(static):
         return static_file(static,root="static")
