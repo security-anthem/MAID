@@ -20,13 +20,13 @@ Thunderbirdで不審なメールを受け取ったとき、MAIDにドラッグ�
 sudo apt install python3-pip postgresql
 pip3 install -r requirements.txt
 ```
-次にpostgresqlの設定を行う
+次にpostgresqlの設定を行う.
 
 ```bash
 sudo -u postgres bash
 createdb testdb
 psql testdb
-create role username with login;
+create role username with login password 'password';
 \q
 exit
 ```

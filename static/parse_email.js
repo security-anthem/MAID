@@ -1,7 +1,12 @@
 "use strict"
 function parseEmail(content) {
     /* contentについて分析を行い，JSONに変換可能なオブジェクトを返す． */
-
+    var contentArray = content.split('\r\n\r\n');
+    var header = contentArray[0];
+    var body = contentArray.slice(1).join('\r\n\r\n');
+    var p_reveive =;
+    var 
+	
     var sample_parse_result_json=`
     {
         "route":[
@@ -32,5 +37,6 @@ function parseEmail(content) {
         ]
     }
     `
-    return JSON.parse(sample_parse_result_json); 
+    //return JSON.parse(sample_parse_result_json);
+    return [header,body];
 }
