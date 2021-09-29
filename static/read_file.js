@@ -13,12 +13,26 @@ function makePostRequest(name, text){
     document.body.appendChild(send_form);
     document.send_form.submit();
 }
-function readFile(file) {
+
+function readFile(file){
     /* FileReaderで読み込み、parseEmailを実行。結果をmakePostRequestでサーバへ送信 */
     let fr = new FileReader();
-    fr.readAsText(file);
+    let decoder_utf8 = new TextDecoder();
+    let re = /charset[^;\r\n]*[;\r\n]/i
+    var encoding;
+    fr.readAsArrayBuffer(file)
     fr.onload = function () {
-        let analysis_result = parseEmail(fr.result);
+        let buf = fr.result
+        let text = decoder_utf8.decode(buf);
+        let charset_string = text.match(re);
+        if (charset_string===null){
+            encoding = "UTF-8";/*文字コードがない場合はUS-ASCIIであるため、文字コードが何であってもよい */
+        }else{
+            encoding = charset_string[0].split("=",2)[1].split(";")[0].trim();
+        }
+        let decoder=new TextDecoder(encoding);
+        text=decoder.decode(buf)
+        let analysis_result = parseEmail(text);
         makePostRequest("send_data", JSON.stringify(analysis_result));
     };
 }
