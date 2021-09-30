@@ -10,9 +10,8 @@ def init():
 
     cur.execute(
         """
-        create table other(
+        create table overview(
           m_id serial NOT NULL, -- id determins mail uniquely
-          title text NOT NULL, -- fuzzy hash of mail's title
           from_header text, -- mail's "from" information
           reply_to text, -- mail's "reply-to" information
           subject text NOT NULL, -- hash of mail's subject
@@ -37,7 +36,7 @@ def init():
           dmarc bit, -- truth value whether dmarc used
           primary key(r_id),
           foreign key(m_id)
-          references other(m_id)
+          references overview(m_id)
         );
         """
     )
@@ -50,7 +49,7 @@ def init():
           attach text NOT NULL, -- fuzzy hash of attachment
           primary key(a_id),
           foreign key(m_id)
-          references other(m_id)
+          references overview(m_id)
         );
         """
     )
@@ -63,12 +62,13 @@ def init():
           pattern text, -- service name pattern
           primary key(p_id),
           foreign key(m_id)
-          references other(m_id)
+          references overview(m_id)
         );
         """
     )
-    
+        
     cur.close()
+    connection.commit()
     connection.close()
 
 if __name__ == "__main__":
