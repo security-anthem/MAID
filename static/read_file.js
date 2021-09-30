@@ -28,7 +28,7 @@ function readFile(file){
         if (charset_string===null){
             encoding = "UTF-8";/*文字コードがない場合はUS-ASCIIであるため、文字コードが何であってもよい */
         }else{
-            encoding = charset_string[0].split("=",2)[1].split(";")[0].trim();
+            encoding = charset_string[0].split("=",2)[1].split(";")[0].replace(/[\"\']/g,"").trim();
         }
         let decoder=new TextDecoder(encoding);
         text=decoder.decode(buf)
