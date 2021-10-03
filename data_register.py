@@ -1,11 +1,18 @@
+# parse raw json data and store parsed data in database
+
+# 不明な点
+#
+# ・引数のjsonデータは，ファイル名の文字列？データそのもの？（ファイル名と仮定してコーディングしました）
+# ・
+
 import psycopg2
 import os
-import ast
+import json
 
 # parse data received from clients
-def parseData():
-    rawdata = argdata
-    parsetree = ast.parse(rawdata)
+def parseData(text filename):
+    json_file = open(filename, 'r')
+    json_dict = json.load(json_file)
     
 # store parsed data in each tables
 def storeData():
