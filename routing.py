@@ -18,7 +18,9 @@ def api_call():
 @get("/static/<static:path>")
 def get_static(static):
         return static_file(static,root="static")
-
+@get("/ssdeep/ssdeep.js")
+def get_ssdeep():
+        return static_file("ssdeep.js",root="ssdeep")
 if __name__ == "__main__":
         run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
