@@ -1,0 +1,3 @@
+[submodule "ssdeep"]
+	path = ssdeep
+	url = git@github.com:cloudtracer/ssdeep.js.git
