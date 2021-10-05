@@ -1,23 +1,23 @@
 "use strict"
 
 function decodeText(textEml, encoding){
-    let content_transfer_encoding;       //メール本文のエンコード方式
+    let cte;       //メール本文のエンコード方式
     let encodedTextBody,decodedTextBody;
     let textBodyStart,textBodyEnd;       //メール本文の開始位置・終了位置
 
-    let strForSearch = 'Content-Type: multipart/alternative';
+    let strForSearch = 'Content-Type: multipart/';
 
     //マルチパート形式でない場合
     if(!textEml.includes(strForSearch)) {
         //メール本文のエンコード方式を取得
         let re = /Content-Transfer-Encoding[^;\r\n]*(base64|quoted-printable|8bit|7bit)[\r\n]/i;
-        let cte_string = textEml.match(re);
-        if (cte_string == null){
+        let cteStringLine = textEml.match(re);
+        if (cteStringLine == null){
             console.log('Content-Transfer-Encoding is not found.'); //debug
             return [];
         }else{
-            content_transfer_encoding = cte_string[0].split(":",2)[1].split("\n")[0].replace(/[" "]/g,"").trim();
-            console.log(content_transfer_encoding); //debug
+            cte = cteStringLine[0].split(":",2)[1].split("\n")[0].replace(/[" "]/g,"").trim();
+            console.log(cte); //debug
         }
 
         /* 
@@ -27,10 +27,11 @@ function decodeText(textEml, encoding){
         strForSearch = '\r\n\r\n';
         textBodyStart = textEml.indexOf(strForSearch, textBodyStart) + strForSearch.length;
         if(textBodyStart == -1 + strForSearch.length){
-            console.log('Decode is failed.'); //debug
+            console.log('Text slicing is failed.'); //debug
             return [];
         }
         else{
+            textBodyEnd = textEml.length;
             //メール本文箇所を切り出し
             encodedTextBody = textEml.slice(textBodyStart, textBodyEnd);
             //不要なhtmlタグを削除
@@ -60,21 +61,21 @@ function decodeText(textEml, encoding){
         strForSearch = boundary;
         textBodyStart = textEml.indexOf(strForSearch, indexBoundaryEnd)+strForSearch.length+2;
         if(textBodyStart == -1 + strForSearch.length+2){
-            console.log('Decode is failed.');//debug
+            console.log('Boundary is failed.');//debug
             return [];
         }
         else{
             textBodyEnd = textEml.indexOf(boundary, textBodyStart) - 4;
             encodedTextBody = textEml.slice(textBodyStart, textBodyEnd);
             let re = /Content-Transfer-Encoding[^;\r\n]*[\r\n]/i;
-            let cte_string = encodedTextBody.match(re);
-            if (cte_string == null){
+            let cteStringLine = encodedTextBody.match(re);
+            if (cteStringLine == null){
                 console.log('Content-Transfer-Encoding is not found.');//debug
                 return [];
             }
             else{
-                content_transfer_encoding = cte_string[0].split(":",2)[1].split("\n")[0].replace(/[" "]/g,"").trim();
-                console.log(content_transfer_encoding);//debug
+                cte = cteStringLine[0].split(":",2)[1].split("\n")[0].replace(/[" "]/g,"").trim();
+                console.log(cte);//debug
             }
         }
 
@@ -82,7 +83,7 @@ function decodeText(textEml, encoding){
         strForSearch = '\r\n\r\n';
         textBodyStart = textEml.indexOf(strForSearch, textBodyStart) + strForSearch.length;
         if(textBodyStart == -1 + strForSearch.length){
-            console.log('Decode is failed.'); //debug
+            console.log('Text slicing is failed.'); //debug
             return [];
         }
         else{
@@ -95,12 +96,12 @@ function decodeText(textEml, encoding){
 
     //メール本文をデコード
     //base64でエンコードされたメール本文をデコード
-    if(content_transfer_encoding.localeCompare("base64", undefined, {sensitivity:'base'}) == 0){
+    if(cte.localeCompare("base64", undefined, {sensitivity:'base'}) == 0){
         decodedTextBody = decodeURIComponent(escape(window.atob(encodedTextBody)));
         console.log(decodedTextBody);//debug
     }
     //quoted-printableでエンコードされたメール本文をデコード
-    else if(content_transfer_encoding.localeCompare("quoted-printable", undefined, {sensitivity:'base'}) == 0){
+    else if(cte.localeCompare("quoted-printable", undefined, {sensitivity:'base'}) == 0){
         if(encoding.localeCompare("utf-8", undefined, {sensitivity:'base'}) == 0){
             const stringFromCharCode=String.fromCharCode;
             encodedTextBody = encodedTextBody.replace(/[\t\x20]$/gm,"").replace(/=?(?:\r\n?|\n)/g,"").replace(/=([a-fA-F0-9]{2})/g,function($0,$1){
@@ -125,9 +126,8 @@ function decodeText(textEml, encoding){
 
 function patternMatching(text){
     //事前に設定されたパターンがメール本文に含まれているかチェック
-    let patternList = ["ゆうちょ銀行","BitCoin"];
     let matchPatternsList = [];
-    patternList.forEach(function(element){
+    spamWordsList.forEach(function(element){
         let re = new RegExp(element, "ig");
         if(re.test(text)){
             matchPatternsList.push(element);

@@ -73,6 +73,7 @@
     <script type="text/javascript" src="static/read_file.js"></script>
     <script type="text/javascript" src="static/eventlistener.js"></script>
     <script type="text/javascript" src="static/analyze_text.js"></script>
+    <script type="text/javascript" src="static/spam_words_list.js"></script>
 </body>
 
 </html>
