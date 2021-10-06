@@ -4,10 +4,12 @@ import psycopg2
 import os
 
 def init():
+    # prepare for SQL database connection
     DATABASE_URL = os.environ['DATABASE_URL'] # get database's URL
     connection = psycopg2.connect(DATABASE_URL, sslmode='require') # establish connection
-    cur = connection.cursor()
-
+    cur = connection.cursor() # get cursor
+    
+    # prototype of 'overview' table
     cur.execute(
         """
         create table overview(
@@ -20,6 +22,7 @@ def init():
         """
     )
     
+    # prototype of 'received' table
     cur.execute(
         """
         create table received(
@@ -31,9 +34,9 @@ def init():
           by text, -- mail's sender
           protocol text, -- mail's protocol
           ssl text, -- ssl version, cipher and bits information
-          spf bit, -- truth value whether spf used
-          dkim bit, -- truth value whether dkim used
-          dmarc bit, -- truth value whether dmarc used
+          spf boolean, -- truth value whether spf used
+          dkim boolean, -- truth value whether dkim used
+          dmarc boolean, -- truth value whether dmarc used
           primary key(r_id),
           foreign key(m_id)
           references overview(m_id)
@@ -41,19 +44,21 @@ def init():
         """
     )
 
+    # prototype of 'attach' table
     cur.execute(
         """
         create table attach(
           a_id serial NOT NULL, -- id determins "attach" information uniquely
           m_id serial NOT NULL, -- id determins mail uniquely
-          attach text NOT NULL, -- fuzzy hash of attachment
+          attach text, -- fuzzy hash of attachment
           primary key(a_id),
           foreign key(m_id)
           references overview(m_id)
         );
         """
     )
-        
+    
+    # prototype of 'pattern' table        
     cur.execute(
         """
         create table pattern(
@@ -67,10 +72,11 @@ def init():
         """
     )
         
+    # terminate connection    
     cur.close()
     connection.commit()
     connection.close()
 
 if __name__ == "__main__":
     init()
-    
+   
