@@ -5,15 +5,14 @@ import os
 import json
             
 # store data received from clients in database
-def recvDataRegister(filename):
+def recvDataRegister(jsontext):
     # prepare for database connection
     DATABASE_URL = os.environ['DATABASE_URL'] # get database URL from export
     connection = psycopg2.connect(DATABASE_URL, sslmode='require') # establish connection using the database URL
     cur = connection.cursor() # get cursor
 
-    # open json file and load it as dictionary
-    json_file = open(filename, 'r')
-    json_dict = json.load(json_file)
+    # open json text as dictionary
+    json_dict = json.loads(jsontext)
     
     # parse and store "overview" section
     cur.execute(
@@ -127,4 +126,4 @@ def recvDataRegister(filename):
     connection.close()
 
 if __name__ == "__main__":
-    recvDataRegister('test.json')
+    recvDataRegister('json_text')
