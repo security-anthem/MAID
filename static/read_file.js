@@ -33,6 +33,8 @@ function readFile(file){
         let decoder=new TextDecoder(encoding);
         text=decoder.decode(buf)
         let analysis_result = parseEmail(text);
-        makePostRequest("send_data", JSON.stringify(analysis_result));
+        // makePostRequest("send_data", JSON.stringify(analysis_result));
+	makePostRequest("send_data", analysis_result);
+	console.log(1);
     };
 }
