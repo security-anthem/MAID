@@ -55,11 +55,15 @@ function parseReceived(content, json){
 function parseReply(content, json){
     // From
     var from = /From:.*<(\S*)>/.exec(content);
-    json.from = from[1];
-    console.log(from);
+    if(from){
+	json.from = from[1];
+    }
+    
     // Reply-To
-    var reply_to = /Reply-To:\s*(\S*)/.exec(content);    
-    json["reply-to"] = reply_to[1];
+    var reply_to = /Reply-To:\s*(\S*)/.exec(content);
+    if(reply_to[1]){
+	json["reply-to"] = reply_to[1];
+    }
 
     // 返信先と返信元が同じだった場合，null
     if(from[1] == reply_to[1]){
