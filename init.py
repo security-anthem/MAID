@@ -3,7 +3,6 @@
 import psycopg2
 import os
 
-# mail id as global variable
 def init():
     # prepare for SQL database connection
     DATABASE_URL = os.environ['DATABASE_URL'] # get database's URL
