@@ -3,11 +3,13 @@
 import psycopg2
 import os
 
+# mail id as global variable
 def init():
     # prepare for SQL database connection
     DATABASE_URL = os.environ['DATABASE_URL'] # get database's URL
     connection = psycopg2.connect(DATABASE_URL, sslmode='require') # establish connection
     cur = connection.cursor() # get cursor
+    cur.execute('drop table overview,pattern,attach,received;')
     
     # prototype of 'overview' table
     cur.execute(
@@ -76,7 +78,7 @@ def init():
     cur.close()
     connection.commit()
     connection.close()
-
+    
 if __name__ == "__main__":
     init()
-   
+    
