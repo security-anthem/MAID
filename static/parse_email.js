@@ -61,12 +61,12 @@ function parseReply(content, json){
     
     // Reply-To
     var reply_to = /Reply-To:\s*(\S*)/.exec(content);
-    if(reply_to[1]){
+    if(reply_to){
 	json["reply-to"] = reply_to[1];
     }
 
     // 返信先と返信元が同じだった場合，null
-    if(from[1] == reply_to[1]){
+    if(from == reply_to){
 	json["from"] = "";
 	json["reply-to"] = "";
     }
@@ -122,7 +122,6 @@ function parseEmail(content) {
 	
 	// receivedの結果をparse
 	var received = /Received:([\s\S]*?)[+\-][0-9]{4}\s.*/.exec(node)[0];
-	console.log(parse_result);
 	parseReceived(received, parse_result);
 	console.log(parse_result);
 
