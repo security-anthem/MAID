@@ -8,7 +8,6 @@ def init():
     DATABASE_URL = os.environ['DATABASE_URL'] # get database's URL
     connection = psycopg2.connect(DATABASE_URL, sslmode='require') # establish connection
     cur = connection.cursor() # get cursor
-    cur.execute('drop table overview,pattern,attach,received;')
     
     # prototype of 'overview' table
     cur.execute(
