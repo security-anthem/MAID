@@ -51,12 +51,10 @@ def api_call():
         """
 
         # 受信データとDBに保存されたデータを比較する関数
-        compareResults=data_compare.recvDataCompare()
+        compareResults=data_compare.compare_data(json.loads(str(request.forms.send_data)))
         # DBに受信データを格納する関数(request.forms.send_data)
-        data_register.recvDataRegister(test_data)
-
-        
-        return template("index", result=json.loads(test_data))
+        data_register.recvDataRegister(str(request.forms.send_data))
+        return template("index", result=compareResults)
 @get("/static/<static:path>")
 def get_static(static):
         return static_file(static,root="static")

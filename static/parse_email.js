@@ -51,6 +51,27 @@ function parseReceived(content, json){
     }
 }
 
+/* メールの送信元，送信先をパースする */
+function parseReply(content, json){
+    // From
+    var from = /From:.*<(\S*)>/.exec(content);
+    json.from = from[1];
+    console.log(from);
+    // Reply-To
+    var reply_to = /Reply-To:\s*(\S*)/.exec(content);    
+    json["reply-to"] = reply_to[1];
+
+    // 返信先と返信元が同じだった場合，null
+    if(from[1] == reply_to[1]){
+	json["from"] = "";
+	json["reply-to"] = "";
+    }
+    
+    // Subject
+    // var subject = /Subject:\s*/.exec(content);
+    // json.subject = ;
+}
+
 /* contentについて分析を行い，JSONに変換可能なオブジェクトを返す． */
 function parseEmail(content) {
     // parse結果を格納
@@ -88,14 +109,9 @@ function parseEmail(content) {
             "dmarc": false
         };
 	
-	console.log(node);
-	let tmp = /Authentication-Results:[\s\S]*/.test(node);
-	console.log(tmp);
-	
 	// Authentication-Resultsが存在する場合，結果をparse
 	if(/Authentication-Results:[\s\S]*/.test(node)){
 	    var authentication_results = /(Authentication-Results:[\s\S]*?)?Received:/.exec(node)[1];
-	    console.log(parse_result);
 	    parseAuthenticationResults(authentication_results, parse_result);
 	    console.log(parse_result);
 	}
@@ -109,43 +125,10 @@ function parseEmail(content) {
 	// パース結果の格納
 	parse_result_json.received.push(parse_result);
     }
+    
+    // ヘッダのパース情報を追加
+    parseReply(header, parse_result_json);
     console.log(parse_result_json);
 
-    let sample_parse_result_json=`
-{
-    "received": [
-        {
-            "from": {
-                "display": "mail.example.com",
-                "reverse": "Unknown",
-                "ip": "10.0.0.1"
-            },
-            "by": "mailsrv.example.com",
-            "protocol": "ESMTP",
-            "ssl": "(version=TLS1_2 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128)",
-            "spf": true,
-            "dkim": true,
-            "dmarc": false
-        },
-        {
-            "from": {
-                "display": "mail.example.com",
-                "reverse": "Unknown",
-                "ip": "10.0.0.1"
-            },
-            "by": "mailsrv.example.com",
-            "protocol": "ESMTP",
-            "ssl": "(version=TLS1_2 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128)",
-            "spf": true,
-            "dkim": true,
-            "dmarc": false
-        }
-    ],
-    "attach": ["fuzzy hash of attachment1", "attachment2"],
-    "pattern": ["service name 1", "service name 2"],
-    "from": "",
-    "reply-to": "",
-    "subject": "hash"
-}    `
     return parse_result_json;
 }
