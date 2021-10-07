@@ -3,7 +3,7 @@
 import psycopg2
 import os
 import json
-            
+
 # store data received from clients in database
 def recvDataRegister(jsontext):
     # prepare for database connection
@@ -27,8 +27,7 @@ def recvDataRegister(jsontext):
           %s,
           %s,
           %s
-        )
-        returning m_id;
+        ) returning m_id;
         """
         , (
             json_dict['from'],
@@ -36,6 +35,11 @@ def recvDataRegister(jsontext):
             json_dict['subject']
           )
     )
+
+    # get mail id from returning m_id
+    results = cur.fetchall()
+    m_id = results[0][0]
+    
     cur.execute('COMMIT')
     
     # parse and store "received" section
@@ -58,7 +62,7 @@ def recvDataRegister(jsontext):
           )
           
           VALUES (
-            setval('overview_m_id_seq', currval('overview_m_id_seq'), false),
+            %s,
             %s,
             %s,
             %s,
@@ -71,6 +75,7 @@ def recvDataRegister(jsontext):
           );
           """
           , (
+              m_id,
               json_rec_from_dict['display'],
               json_rec_from_dict['reverse'],
               json_rec_from_dict['ip'],
@@ -94,11 +99,14 @@ def recvDataRegister(jsontext):
           )
           
           VALUES (
-            setval('overview_m_id_seq', currval('overview_m_id_seq'), false),
+            %s,
             %s
           );
           """
-          , (att_str,)
+          , (
+              m_id,
+              att_str
+            )
       )
       cur.execute('COMMIT')
   
@@ -112,18 +120,21 @@ def recvDataRegister(jsontext):
           )
           
           VALUES (
-            setval('overview_m_id_seq', currval('overview_m_id_seq'), true),
+            %s,
             %s
           );
           """
-          , (pat_str,)
+          , (
+              m_id,
+              pat_str
+            )
       )
       cur.execute('COMMIT')
-
+      
     # commit and terminate database connection
     cur.close()
     connection.commit()
     connection.close()
-
+            
 if __name__ == "__main__":
     recvDataRegister('json_text')
