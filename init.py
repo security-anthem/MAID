@@ -76,7 +76,7 @@ def init():
     cur.close()
     connection.commit()
     connection.close()
-
+    
 if __name__ == "__main__":
     init()
-   
+    
