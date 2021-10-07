@@ -17,6 +17,9 @@ Thunderbirdで不審なメールを受け取ったとき、MAIDにドラッグ�
 
 ### テスト環境
 ```bash
+git clone 
+git submodule init
+git submodule update
 sudo apt install python3-pip postgresql
 pip3 install -r requirements.txt
 ```
@@ -41,6 +44,7 @@ psql testdb
 起動
 ```bash
 export DATABASE_URL=postgres://username:password@localhost:5432/testdb
+python3 init.py
 python3 routing.py
 ```
 起動したら[http://localhost:5000](http://localhost:5000)にアクセスする。
@@ -51,6 +55,7 @@ export DATABASE_URLは用意したpostgresqlのサーバの設定に合わせて
 sudo apt install python3-pip
 pip3 install -r requirements.txt
 export DATABASE_URL=postgres://username:password@hostname:5432/database_name
+python3 init.py
 gunicorn routing:app
 ```
 
@@ -65,6 +70,7 @@ heroku login
 heroku create
 heroku addons:create heroku-postgresql:hobby-dev
 git push heroku main
+heroku run python3 init.py
 heroku open
 ```
 
