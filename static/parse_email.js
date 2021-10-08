@@ -72,8 +72,10 @@ function parseReply(content, json){
     }
     
     // Subject
-    // var subject = /Subject:\s*/.exec(content);
-    // json.subject = ;
+    var subject = /Subject:.*(\r\n\s+.*)*/.exec(content);
+    // fuzzy hash化
+    var hash = ssdeep.digest(subject[0]);
+    json.subject = hash;
 }
 
 /* contentについて分析を行い，JSONに変換可能なオブジェクトを返す． */
@@ -128,10 +130,17 @@ function parseEmail(content) {
 	// パース結果の格納
 	parse_result_json.received.push(parse_result);
     }
+    // 添付ファイルの情報の追加
+    var hash_list = attachmentToHash(content);
+    parse_result_json.attach = hash_list;
+
+    // 本文情報の追加
+    var match_list = patternMatching(content);
+    parse_result_json.pattern = match_list;
     
     // ヘッダのパース情報を追加
     parseReply(header, parse_result_json);
-    console.log(parse_result_json);
+    console.log(parse_result_json);    
 
     return parse_result_json;
 }
