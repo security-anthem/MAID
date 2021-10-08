@@ -11,6 +11,7 @@
 
 <body>
     <h1>MAID (Mail Detective) </h1>
+    <p><a href="static/usage.html">使い方</a></p>
     <h2>メールのアップロード</h2>
     <div id="upload-area">
         <p>Thunderbirdからメールをドラッグ＆ドロップもしくは以下のボタンから.emlファイルをアップロード</p>
@@ -49,7 +50,7 @@
                     {{html.escape(last_by)}}<br />
                     SPF: {{html.escape(str(received.get("spf",False)))}}, 
                     DKIM: {{html.escape(str(received.get("dkim",False)))}}, 
-                    DMARC: {{html.escape(str(received.get("dmarc",False)))}}
+                    DMARC: {{html.escape(str(received.get("dmarc",False)))}}<br />
                     {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
                 </p>
             </div>

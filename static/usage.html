@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>MAIDの使い方</title>
+        <link rel="stylesheet" href="drag_and_drop.css">
+        <link rel="stylesheet" href="base.css">
+        <link rel="stylesheet" href="description.css">
+    </head>
+    <body>
+        <p><a href="../">MAIDに戻る</a></p>
+        <h1>MAIDの使い方</h1>
+        このページには以下の2つについて説明します。
+        <ul>
+            <li><a href="#post">メールの投稿方法</a></li>
+            <li><a href="#result">結果の説明</a></li>
+            <li><a href="#content">送信される情報</a></li>
+        </ul>
+        <h2 id="post">メールの投稿方法</h2>
+        <h3>Thunderbirdの場合</h3>
+        <ol>
+            <li>
+                Thunderbirdからメールを以下に示す枠にドラッグアンドドロップします。
+                <div id="upload-area">
+                    <p>Thunderbirdからメールをドラッグ＆ドロップもしくは以下のボタンから.emlファイルをアップロード</p>
+                    <input type="file" name="file" id="file-input" disabled>
+                </div>
+            </li>
+            <li>ドラッグアンドドロップするとサーバに送られ、結果が出力されます。</li>
+        </ol>
+        <h3>Gmailの場合</h3>
+        <ol>
+            <li>メールを開く</li>
+            <li>右にある縦に3つ点が並んでいる部分をクリックする
+            </li>
+            <li>「メッセージをダウンロード」をクリックする
+            </li>
+            <li>任意の場所に保存する</li>
+            <li>FirefoxでMAIDにアクセスし「参照...」をクリックする</li>
+            <li>保存したメールを選択する</li>
+            <li>自動でサーバに送られて、結果が出力されます。</li>
+        </ol>
+        <h2 id="result">結果の説明</h2>
+        <div id="result">
+            <h3>概要</h3>
+                <p>from: mail@example.com (5)</p>
+                <p>reply-to: {{html.escape(result.get("reply-to",""))}}</p>
+                <p>subject: {{html.escape(result.get("subject",""))}}</p>
+                <div class="description">
+                    from 
+                </div>
+                <p>添付ファイル</p>
+                <ul>
+                    % for i in result.get("attach",[]):
+                    <li>hash: {{html.escape(i)}}</li>
+                    %end
+                </ul>
+                <p>検出されたパターン</p>
+                <ul>
+                % for i in result.get("pattern",[]):
+                    <li>{{html.escape(i)}}</li>
+                %end
+                </ul>
+                <h3>配送経路</h3>
+                <div class="result-flex">
+                    <div class="square">
+                    <p>サーバ</p>
+                    </div>
+                    <div class="header-info">
+                        <p>
+                            <br />
+                            SPF: True, 
+                            DKIM: True, 
+                            DMARC: True<span class="description">←SPF、DKIM、DMARCの検証が行われ、検証に成功した場合のみTrueになります。</span><br />
+                            {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
+                        </p>
+                    </div>
+                </div>
+                <div class="result-flex">
+                    <div class="arrow">
+                        <div class="arrow-square"></div>
+                        <div class="arrow-traiangle"></div>
+                    </div>
+                    <div class="crypto-protocol">
+                        <p>
+                            {{html.escape(received.get("protocol","")+received.get("ssl",""))}}
+                        </p>
+                    </div>
+                </div>
+                <div class="result-flex">
+                    <div class="square">
+                    <p>サーバ</p>
+                    </div>
+                    <div class="header-info">
+                        <p>
+                            {{html.escape(last_by)}}<br />
+                            SPF: True, ()
+                            DKIM: True, 
+                            DMARC: True<br />
+                            {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
+                        </p>
+                    </div>
+                </div>
+                <div class="result-flex">
+                    <div class="arrow">
+                        <div class="arrow-square"></div>
+                        <div class="arrow-traiangle"></div>
+                    </div>
+                    <div class="crypto-protocol">
+                        <p>
+                            {{html.escape(received.get("protocol","")+received.get("ssl",""))}}
+                        </p>
+                    </div>
+                </div>
+                %last_by=received.get("by")
+                % end
+                <div class="result-flex">
+                    <div class="square">
+                    <p>サーバ</p>
+                    </div>
+                    <div class="header-info">
+                        <p>
+                            {{html.escape(last_by)}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <h2 id="content">サーバに送信される情報</h2>
+    </body>
+</html>
