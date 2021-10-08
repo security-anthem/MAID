@@ -79,7 +79,7 @@ function parseReply(content, json){
 }
 
 /* contentについて分析を行い，JSONに変換可能なオブジェクトを返す． */
-function parseEmail(content) {
+function parseEmail(content, encoding) {
     // parse結果を格納
     var parse_result_json = {
 	"received": [],
@@ -135,7 +135,7 @@ function parseEmail(content) {
     parse_result_json.attach = hash_list;
 
     // 本文情報の追加
-    var match_list = patternMatching(content);
+    var match_list = decodeText(content, encoding);
     parse_result_json.pattern = match_list;
     
     // ヘッダのパース情報を追加

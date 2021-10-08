@@ -33,8 +33,7 @@ function readFile(file){
         let decoder=new TextDecoder(encoding);
         text=decoder.decode(buf)
         //メール本文に含まれる特定文字列のパターンを取得
-        let matchPatternsList = decodeText(text,encoding);
-        let analysis_result = parseEmail(text);
+        let analysis_result = parseEmail(text, encoding);
         makePostRequest("send_data", JSON.stringify(analysis_result));
 	//makePostRequest("send_data", analysis_result);
 	console.log(1);
