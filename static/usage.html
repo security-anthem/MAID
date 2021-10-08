@@ -43,24 +43,40 @@
         <h2 id="result">結果の説明</h2>
         <div id="result">
             <h3>概要</h3>
-                <p>from: mail@example.com (5)</p>
-                <p>reply-to: {{html.escape(result.get("reply-to",""))}}</p>
-                <p>subject: {{html.escape(result.get("subject",""))}}</p>
+                <p>from: mail@example.com (ヒット数：5)</p>
+                <p>reply-to: info@example.com (ヒット数：3)</p>
+                <p>subject: 3:IGmSVIGrVDPHDwb8oN0n6FSKTv7qBaQ1QS1i8REfYlo20widQEsRSY:7prVDPHDwkQTvObe8REfYkwicsY (ヒット数：2)</p>
                 <div class="description">
-                    from 
+                    <ul>
+                        <li>from: メールのFromヘッダで、メールソフトで差出人として表示されます。Toと同一の場合は表示されません。ヒット数は、過去にこのfromが設定されたメールが投稿された件数です。</li>
+                        <li>reply-to: 返信先になるメールアドレスです。ヒット数は過去にこのreply-toが設定されたメールが投稿された回数です。</li>
+                        <li>subject: メールの件名としてメールソフトで表示される文字列のハッシュ値です。ヒット数は過去にこのsubjectが設定されたメールが投稿された回数です。</li>
+                    </ul>
+                    
                 </div>
                 <p>添付ファイル</p>
                 <ul>
-                    % for i in result.get("attach",[]):
-                    <li>hash: {{html.escape(i)}}</li>
-                    %end
+                    <li>hash: 12288:IYI1M/e/e/FFrWyF0HXY42vDGdoURxXzG93/TJl2F+X45lg:I/jkOHxous1lGpe (ヒット数：3)</li>
                 </ul>
+                <div class="description">
+                    添付ファイルのハッシュ値です。1行あたり1つの添付ファイルに対応しています。
+                    ヒット数は過去にそれぞれのファイルが添付されたメールが投稿された回数です。
+                </div>
                 <p>検出されたパターン</p>
                 <ul>
-                % for i in result.get("pattern",[]):
-                    <li>{{html.escape(i)}}</li>
-                %end
+                    <li>Apple (ヒット数：0)</li>
+                    <li>Bit (ヒット数：4)</li>
+                    <li>click (ヒット数：0)</li>
+                    <li>device (ヒット数：0)</li>
+                    <li>Facebook (ヒット数：0)</li>
+                    <li>URL (ヒット数：3)</li>
+                    <li>パスワード (ヒット数：0)</li>
                 </ul>
+                <div class="description">
+                    メールの本文に含まれる文字列です。検出される文字列は以下のURLに保存されています。<br />
+                    <a href="https://github.com/security-anthem/MAID/blob/main/static/spam_words_list.js">https://github.com/security-anthem/MAID/blob/main/static/spam_words_list.js</a><br />
+                    ヒット数は過去にそれぞれの文字列が本文に記述されたメールが投稿された回数です。
+                </div>
                 <h3>配送経路</h3>
                 <div class="result-flex">
                     <div class="square">
@@ -71,34 +87,17 @@
                             <br />
                             SPF: True, 
                             DKIM: True, 
-                            DMARC: True<span class="description">←SPF、DKIM、DMARCの検証が行われ、検証に成功した場合のみTrueになります。</span><br />
-                            {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
-                        </p>
-                    </div>
-                </div>
-                <div class="result-flex">
-                    <div class="arrow">
-                        <div class="arrow-square"></div>
-                        <div class="arrow-traiangle"></div>
-                    </div>
-                    <div class="crypto-protocol">
-                        <p>
-                            {{html.escape(received.get("protocol","")+received.get("ssl",""))}}
-                        </p>
-                    </div>
-                </div>
-                <div class="result-flex">
-                    <div class="square">
-                    <p>サーバ</p>
-                    </div>
-                    <div class="header-info">
-                        <p>
-                            {{html.escape(last_by)}}<br />
-                            SPF: True, ()
-                            DKIM: True, 
                             DMARC: True<br />
-                            {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
+                            mail.display.example.com（ヒット数：3）(198.51.100.3（ヒット数4）[reverse198-51-100-3.example.com])
                         </p>
+                        <div class="description">
+                            <ul>
+                                <li>SPF、DKIM、DMARCの検証が行われ、検証に成功した場合のみTrueになります。</li>
+                                <li>mail.display.example.comはメールサーバに設定されたサーバネームを表しています。<br />ヒット数は過去にこの名前がサーバネームとして投稿された回数です。</li>
+                                <li>198.51.100.3はメールサーバのIPアドレスを表しています。ヒット数は過去にこのIPアドレスが投稿された回数です。</li>
+                                <li>reverse198-51-100-3.example.comは198.51.100.3をメールサーバが逆引きしたときの結果です。</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="result-flex">
@@ -108,23 +107,34 @@
                     </div>
                     <div class="crypto-protocol">
                         <p>
-                            {{html.escape(received.get("protocol","")+received.get("ssl",""))}}
+                            ESMTP<br>
+                            <span class="description">矢印の右側に転送に用いられたプロトコルが表示されます。暗号化された場合は暗号の情報も表示されます。</span>
                         </p>
                     </div>
                 </div>
-                %last_by=received.get("by")
-                % end
                 <div class="result-flex">
                     <div class="square">
                     <p>サーバ</p>
                     </div>
                     <div class="header-info">
                         <p>
-                            {{html.escape(last_by)}}
+                            example.net<br>
+                            <span class="description">受信者が利用しているメールサーバの1つ前のサーバまで表示されます。</span>
                         </p>
                     </div>
                 </div>
             </div>
         <h2 id="content">サーバに送信される情報</h2>
+        <p>画面に表示された内容が送信された情報です。送信された情報はすべて画面表示にも利用しています。</p>
+        <ul>
+            <li>メール配送時で経由したサーバのホスト名とIPアドレス</li>
+            <li>メール配送時に利用されたプロトコルと暗号化の方式</li>
+            <li>SPF、DKIM、DMARCの検証結果</li>
+            <li>添付ファイルのFuzzyHash</li>
+            <li>メール本文中に書かれたサービス名などのキーワード</li>
+            <li>メールソフトで表示される差出人（ただし、Toと同一の場合は送信されない）</li>
+            <li>メールソフトで表示されるreply-to</li>
+            <li>件名のFuzzyHash</li>
+        </ul>
     </body>
 </html>
