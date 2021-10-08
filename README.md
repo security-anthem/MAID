@@ -23,7 +23,7 @@ git submodule update
 sudo apt install python3-pip postgresql
 pip3 install -r requirements.txt
 ```
-次にpostgresqlの設定を行う
+次にpostgresqlの設定を行う.
 
 ```bash
 sudo -u postgres bash

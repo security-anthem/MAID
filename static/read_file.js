@@ -36,5 +36,7 @@ function readFile(file){
         let matchPatternsList = decodeText(text,encoding);
         let analysis_result = parseEmail(text);
         makePostRequest("send_data", JSON.stringify(analysis_result));
+	//makePostRequest("send_data", analysis_result);
+	console.log(1);
     };
 }
