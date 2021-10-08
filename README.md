@@ -55,6 +55,8 @@ export DATABASE_URLは用意したpostgresqlのサーバの設定に合わせて
 sudo apt install python3-pip
 pip3 install -r requirements.txt
 export DATABASE_URL=postgres://username:password@hostname:5432/database_name
+git submodule init
+git submodule update
 python3 init.py
 gunicorn routing:app
 ```
