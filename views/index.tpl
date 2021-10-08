@@ -79,6 +79,8 @@
         </div>
     </div>
     % end
+    <script type="text/javascript" src="ssdeep/ssdeep.js"></script>    
+    <script type="text/javascript" src="static/attachmentToHash.js"></script>    
     <script type="text/javascript" src="static/parse_email.js"></script>
     <script type="text/javascript" src="static/read_file.js"></script>
     <script type="text/javascript" src="static/eventlistener.js"></script>
@@ -87,3 +89,4 @@
 </body>
 
 </html>
+	
