@@ -1,0 +1,3 @@
+bottle
+gunicorn
+psycopg2-binary
