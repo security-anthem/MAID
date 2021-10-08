@@ -2,16 +2,21 @@
   display: flex;
 }
 .square{
-    margin       : 0px 20px 20px;
-    width        : 150px;
-    height       : 150px;
-    background   : #4472c4;
+  background-image    : url(image/server.png);
+  background-repeat   : no-repeat;
+  background-position : left left;
+  background-size     : contain;
+  margin              : 0px 20px 50px;
+  width               : 136px;
+  height              : 160px;
+  min-width           : 136px;
 }
+
 .square p{
   margin         : 0px;
-  font-size      : 25px;
-  color          : #ffffff;
-  line-height    : 150px;
+  font-size      : 20px;
+  color          : #000000;
+  line-height    : 360px;
   text-align     : center;
 }
 
@@ -19,7 +24,7 @@
   font-size      : 20px;
 }
 .arrow {
-  margin         : 0px 65px;
+  margin         : 10px 60px;
 }
 .arrow .arrow-square {
   width          : 20px;

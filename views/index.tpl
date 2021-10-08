@@ -42,7 +42,7 @@
         %>
         <div class="result-flex">
             <div class="square">
-                <p>サーバ</p>
+            <p>サーバ</p>
             </div>
             <div class="header-info">
                 <p>
@@ -69,7 +69,7 @@
         % end
         <div class="result-flex">
             <div class="square">
-                <p>サーバ</p>
+            <p>サーバ</p>
             </div>
             <div class="header-info">
                 <p>
