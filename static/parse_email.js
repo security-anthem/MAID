@@ -141,6 +141,6 @@ function parseEmail(content, encoding) {
     // ヘッダのパース情報を追加
     parseReply(header, parse_result_json);
     console.log(parse_result_json);    
-
+    parse_result_json.received = parse_result_json.received.reverse()
     return parse_result_json;
 }
