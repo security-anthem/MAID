@@ -1,10 +1,5 @@
 import psycopg2
 import os
-
-# (1) 引数としてメールに関するJSON形式の文字列を受け取る
-# (2) (1)を辞書型に変換
-# (3) 
-
 import json
 
 test_data = '''
