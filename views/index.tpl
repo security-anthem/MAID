@@ -11,6 +11,7 @@
 
 <body>
     <h1>MAID (Mail Detective) </h1>
+    <p><a href="static/usage.html">使い方</a></p>
     <h2>メールのアップロード</h2>
     <div id="upload-area">
         <p>Thunderbirdからメールをドラッグ＆ドロップもしくは以下のボタンから.emlファイルをアップロード</p>
@@ -38,26 +39,37 @@
         <h3>配送経路</h3>
         <% 
         last_by=""
+        sender="送信者"
         for received in result.get("received",[]):
         %>
         <div class="result-flex">
             <div class="square">
-            <p>サーバ</p>
+            <p>{{sender}}</p>
+            % sender="サーバ"
             </div>
             <div class="header-info">
                 <p>
                     {{html.escape(last_by)}}<br />
                     SPF: {{html.escape(str(received.get("spf",False)))}}, 
                     DKIM: {{html.escape(str(received.get("dkim",False)))}}, 
-                    DMARC: {{html.escape(str(received.get("dmarc",False)))}}
-                    {{html.escape(received.get("from",{}).get("display","")+"("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
+                    DMARC: {{html.escape(str(received.get("dmarc",False)))}}<br />
+                    {{html.escape(received.get("from",{}).get("display",""))}}
+                    %if received.get("from",{}).get("ip","")!="":
+                    {{html.escape("("+received.get("from",{}).get("ip","")+"["+received.get("from",{}).get("reverse","")+"])")}}
+                    %end
                 </p>
             </div>
         </div>
         <div class="result-flex">
             <div class="arrow">
-                <div class="arrow-square"></div>
-                <div class="arrow-traiangle"></div>
+                <%
+                ssl_flag=""
+                if received.get("ssl","")=="":
+                    ssl_flag="_red"
+                end
+                %>
+                <div class="arrow-square{{ssl_flag}}"></div>
+                <div class="arrow-traiangle{{ssl_flag}}"></div>
             </div>
             <div class="crypto-protocol">
                 <p>
